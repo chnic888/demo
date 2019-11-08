@@ -1,6 +1,19 @@
 spring:
   application:
     name: demo
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/test?useSSL=false
+    username: root
+    password: root
+    hikari:
+      pool-name: ds-pool
+      maximum-pool-size: 20
+      minimum-idle: 10
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      connection-test-query: SELECT 1
+      max-lifetime: 1800000
   jpa:
     show-sql: true
 
@@ -10,3 +23,6 @@ server:
     enabled: true
     mime-types: application/json
     min-response-size: 4096
+
+logging:
+  config: classpath:logback.xml

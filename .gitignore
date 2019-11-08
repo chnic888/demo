@@ -5,6 +5,7 @@ build/
 !**/src/test/**
 
 .DS_Store
+log/
 
 ### STS ###
 .apt_generated
