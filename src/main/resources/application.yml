@@ -4,9 +4,6 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/test?useSSL=false
-    username: root
-    password: root
     hikari:
       pool-name: ds-pool
       maximum-pool-size: 20
@@ -16,6 +13,9 @@ spring:
       max-lifetime: 1800000
   jpa:
     show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
 
 server:
   port: 8081
