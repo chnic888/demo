@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: demo
+  jpa:
+    show-sql: true
+
+server:
+  port: 8081
+  compression:
+    enabled: true
+    mime-types: application/json
+    min-response-size: 4096
