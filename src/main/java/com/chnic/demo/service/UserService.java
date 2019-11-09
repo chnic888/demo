@@ -1,12 +1,23 @@
 package com.chnic.demo.service;
 
+import com.chnic.demo.entity.User;
 import com.chnic.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public List<User> getUserList() {
+        return userRepository.findAll();
+    }
 }
