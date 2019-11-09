@@ -1,6 +1,6 @@
 package com.chnic.demo.controller;
 
-import com.chnic.demo.BaseDemoApplicationTest;
+import com.chnic.demo.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserControllerTest extends BaseDemoApplicationTest {
+public class UserControllerTest extends BaseIntegrationTest {
 
     @Test
     public void should_return_all_available_users() throws Exception {
