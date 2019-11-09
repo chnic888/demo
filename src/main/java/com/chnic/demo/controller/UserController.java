@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +32,13 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public List<UserResponse> getUserList() {
         return userService.getUserList().stream()
+                .map(user -> ModelMapper.map(user, UserResponse.class))
+                .collect(toList());
+    }
+
+    @GetMapping(value = "/{name}")
+    public List<UserResponse> getUserByName(@PathVariable("name") String name) {
+        return userService.getUserByName(name).stream()
                 .map(user -> ModelMapper.map(user, UserResponse.class))
                 .collect(toList());
     }

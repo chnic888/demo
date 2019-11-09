@@ -1,48 +1,100 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.1.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id 'java'
-	id 'idea'
-	id 'com.bmuschko.docker-remote-api' version '5.3.0'
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'idea'
+    id 'com.bmuschko.docker-remote-api' version '5.3.0'
+    id 'jacoco'
 }
 
 group = 'com.chnic'
 version = '1.0.0'
 sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
-	mavenCentral()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.flywaydb:flyway-core'
-	implementation 'net.logstash.logback:logstash-logback-encoder:6.2'
-	implementation 'io.springfox:springfox-swagger2:2.9.2'
-	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.2'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
-	compileOnly 'org.projectlombok:lombok'
-	
-	runtimeOnly 'mysql:mysql-connector-java'
-	
-	annotationProcessor 'org.projectlombok:lombok'
-	
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+    compileOnly 'org.projectlombok:lombok'
+
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 bootRun {
-	environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "local"
+    environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "local"
 }
+
+jacocoTestReport {
+    group = "jacoco"
+
+    reports {
+        xml.enabled = false
+        csv.enabled = false
+        html.enabled = true
+        html.destination file("${buildDir}/coverage-report")
+    }
+
+    afterEvaluate {
+        classDirectories.from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'com/chnic/demo/*.*',
+                    'com/chnic/demo/configuration/**',
+                    'com/chnic/demo/dto/**',
+                    'com/chnic/demo/entity/**',
+            ])
+        })
+    }
+}
+
+jacocoTestCoverageVerification {
+    group = "jacoco"
+
+    violationRules {
+        rule {
+            element = 'CLASS'
+            excludes = [
+                    'com.chnic.demo.configuration.*',
+                    'com.chnic.demo.dto.*',
+                    'com.chnic.demo.entity.*',
+                    'com.chnic.demo.exception.*',
+            ]
+
+            limit {
+                counter = 'INSTRUCTION'
+                minimum = 0.15
+                value = 'COVEREDRATIO'
+            }
+        }
+    }
+}
+
+jacocoTestReport.finalizedBy jacocoTestCoverageVerification
 
 import com.bmuschko.gradle.docker.tasks.container.*
 import com.bmuschko.gradle.docker.tasks.image.*
@@ -51,46 +103,52 @@ import com.bmuschko.gradle.docker.tasks.container.extras.DockerWaitHealthyContai
 import java.time.Duration
 
 task pullContainer(type: DockerPullImage) {
-	repository = 'mysql'
-	tag = '8.0'
+    group 'docker'
+    repository = 'mysql'
+    tag = '8.0'
 }
 
 task createContainer(type: DockerCreateContainer) {
-	dependsOn pullContainer
-	targetImageId pullContainer.getImageId()
-	portBindings = ['3406:3306']
-	withEnvVar('MYSQL_ROOT_PASSWORD', 'root')
-	withEnvVar('MYSQL_DATABASE', 'test')
+    group 'docker'
+    dependsOn pullContainer
+    targetImageId pullContainer.getImageId()
+    portBindings = ['3406:3306']
+    withEnvVar('MYSQL_ROOT_PASSWORD', 'root')
+    withEnvVar('MYSQL_DATABASE', 'test')
 }
 
 task startContainer(type: DockerStartContainer) {
-	dependsOn createContainer
-	targetContainerId createContainer.getContainerId()
+    group 'docker'
+    dependsOn createContainer
+    targetContainerId createContainer.getContainerId()
 }
 
 task startAndWaitOnHealthyContainer(type: DockerWaitHealthyContainer) {
-	dependsOn startContainer
-	awaitStatusTimeout = 60
-	checkInterval = 2
-	targetContainerId createContainer.getContainerId()
+    group 'docker'
+    dependsOn startContainer
+    awaitStatusTimeout = 60
+    checkInterval = 2
+    targetContainerId createContainer.getContainerId()
 
-	doLast {
-		sleep(10 * 1000)
-	}
+    doLast {
+        sleep(10 * 1000)
+    }
 }
 
 task stopContainer(type: DockerStopContainer) {
-	targetContainerId createContainer.getContainerId()
+    group 'docker'
+    targetContainerId createContainer.getContainerId()
 }
 
 task removeContainer(type: DockerRemoveContainer) {
-	dependsOn stopContainer
-	targetContainerId createContainer.getContainerId()
+    group 'docker'
+    dependsOn stopContainer
+    targetContainerId createContainer.getContainerId()
 }
 
 test {
-	useJUnitPlatform()
-	testLogging.showStandardStreams = true
-	dependsOn startAndWaitOnHealthyContainer
-	finalizedBy removeContainer
+    useJUnitPlatform()
+    testLogging.showStandardStreams = true
+    dependsOn startAndWaitOnHealthyContainer
+    finalizedBy removeContainer, jacocoTestReport
 }
