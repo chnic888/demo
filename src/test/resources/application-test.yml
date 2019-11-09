@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3406/test?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: root

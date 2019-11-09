@@ -1,0 +1,3 @@
+INSERT INTO user (name, gender, birthday, mobile, email, remark) VALUES ('Lionel Messi', 1, '1987-06-24', '13800138000', 'lionel.messi@gmail.com', 'football');
+INSERT INTO user (name, gender, birthday, mobile, email, remark) VALUES ('Cristiano Ronaldo', 1, '1985-02-05', '13700137000', 'cristiano.ronaldo@gmail.com', 'football');
+INSERT INTO user (name, gender, birthday, mobile, email, remark) VALUES ('Serena Williams', 0, '1981-09-26', '13600136000', 'serena.williams@gmail.com', 'tennis');
