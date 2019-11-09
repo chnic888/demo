@@ -50,6 +50,8 @@ bootRun {
     environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "local"
 }
 
+defaultTasks 'bootRun'
+
 jacocoTestReport {
     group = "jacoco"
 
