@@ -16,4 +16,17 @@ public class UserControllerTest extends BaseIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)));
     }
+
+    @Test
+    public void should_return_user_not_found_exception_when_retrieved_nonexistent_name() throws Exception {
+        mockMvc.perform(get("/api/v1/users/test-user-name"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void should_return_user_when_search_existed_name() throws Exception {
+        mockMvc.perform(get("/api/v1/users/Lionel Messi"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
 }
