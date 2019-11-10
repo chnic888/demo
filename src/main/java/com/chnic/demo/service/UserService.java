@@ -23,9 +23,6 @@ public class UserService {
     }
 
     public List<User> getUserByName(String name) {
-        if (name.startsWith("i")) {
-            return userRepository.findAll();
-        }
         return userRepository.findByName(name).orElseThrow(() -> new UserNotFoundException("user not found"));
     }
 }
