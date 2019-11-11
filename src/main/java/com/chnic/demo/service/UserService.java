@@ -13,6 +13,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private String a_b;
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
