@@ -3,6 +3,9 @@ spring:
     url: jdbc:mysql://localhost:3306/test?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: root
+  redis:
+    host: localhost
+    password:
 
 server:
   port: 8081

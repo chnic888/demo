@@ -21,6 +21,19 @@ spring:
       ddl-auto: validate
   jackson:
     time-zone: Asia/Shanghai
+  redis:
+    host: ${REDIS_HOST}
+    port: 6379
+    password: ${REDIS_PASSWORD}
+    jedis:
+      pool:
+        max-active: 10
+        max-idle: 10
+        max-wait: 1000ms
+  data:
+    redis:
+      repositories:
+        enabled: false
 
 server:
   port: 8080
