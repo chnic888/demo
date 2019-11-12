@@ -1,3 +1,11 @@
+import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerRemoveContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
+import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
+import com.bmuschko.gradle.docker.tasks.container.extras.DockerWaitHealthyContainer
+import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
+import com.github.spotbugs.SpotBugsTask
+
 plugins {
     id 'org.springframework.boot' version '2.2.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
@@ -6,6 +14,7 @@ plugins {
     id 'pmd'
     id 'com.bmuschko.docker-remote-api' version '5.3.0'
     id 'jacoco'
+    id 'com.github.spotbugs' version '2.0.1'
 }
 
 group = 'com.chnic'
@@ -22,25 +31,6 @@ configurations {
 repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     mavenCentral()
-}
-
-
-pmd {
-    consoleOutput = true
-    reportsDir = file("build/reports/pmd")
-
-    ruleSets = [
-            "java-ali-comment",
-            "java-ali-concurrent",
-            "java-ali-constant",
-            "java-ali-exception",
-            "java-ali-flowcontrol",
-            "java-ali-naming",
-            "java-ali-oop",
-            "java-ali-orm",
-            "java-ali-other",
-            "java-ali-set"
-    ]
 }
 
 dependencies {
@@ -73,6 +63,34 @@ bootRun {
 }
 
 defaultTasks 'bootRun'
+
+pmd {
+    ignoreFailures = false
+    consoleOutput = true
+    ruleSets = [
+            "java-ali-comment",
+            "java-ali-concurrent",
+            "java-ali-constant",
+            "java-ali-exception",
+            "java-ali-flowcontrol",
+            "java-ali-naming",
+            "java-ali-oop",
+            "java-ali-orm",
+            "java-ali-other",
+            "java-ali-set"
+    ]
+}
+
+spotbugs {
+    toolVersion = '3.1.12'
+    ignoreFailures = true
+    effort = "default"
+}
+
+tasks.withType(SpotBugsTask) {
+    reports.xml.enabled = false
+    reports.html.enabled = true
+}
 
 jacocoTestReport {
     group = "jacoco"
@@ -119,14 +137,6 @@ jacocoTestCoverageVerification {
 }
 
 jacocoTestReport.finalizedBy jacocoTestCoverageVerification
-
-
-import com.bmuschko.gradle.docker.tasks.container.DockerCreateContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerRemoveContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStartContainer
-import com.bmuschko.gradle.docker.tasks.container.DockerStopContainer
-import com.bmuschko.gradle.docker.tasks.container.extras.DockerWaitHealthyContainer
-import com.bmuschko.gradle.docker.tasks.image.DockerPullImage
 
 task pullContainer(type: DockerPullImage) {
     group 'docker'
@@ -175,7 +185,7 @@ task removeContainer(type: DockerRemoveContainer) {
 test {
     useJUnitPlatform()
     testLogging.showStandardStreams = true
-    dependsOn startAndWaitOnHealthyContainer
+    dependsOn pmdMain, startAndWaitOnHealthyContainer
     finalizedBy removeContainer, jacocoTestReport
 }
 
