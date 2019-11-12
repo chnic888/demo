@@ -44,3 +44,17 @@ server:
 
 logging:
   config: classpath:logback.xml
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+info:
+  name: demo-service
+  description: a spring boot demo
+  version: 1.0
