@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author xxx
+ */
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-
-    private String a_b;
 
     @Autowired
     public UserService(UserRepository userRepository) {

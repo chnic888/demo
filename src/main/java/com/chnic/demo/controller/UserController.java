@@ -14,6 +14,9 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * @author xxx
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/api/v1/users")

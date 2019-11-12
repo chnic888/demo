@@ -15,6 +15,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
+/**
+ * @author xxx
+ */
 @Builder
 @Data
 @NoArgsConstructor

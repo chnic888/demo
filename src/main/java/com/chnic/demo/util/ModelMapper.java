@@ -2,6 +2,9 @@ package com.chnic.demo.util;
 
 import org.springframework.beans.BeanUtils;
 
+/**
+ * @author xxx
+ */
 public class ModelMapper {
 
     public static <T, R> R map(T source, Class<R> targetClass) {
