@@ -17,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
+/**
+ * @author xxx
+ */
 public class UserServiceTest extends BaseUnitTest {
 
     @InjectMocks
@@ -26,7 +29,7 @@ public class UserServiceTest extends BaseUnitTest {
     private UserRepository userRepository;
 
     @Test
-    public void should_get_user_list_from_repository() {
+    public void testGetUserListFromRepository() {
         doReturn(Lists.newArrayList(
                 User.builder().name("u1").build(),
                 User.builder().name("u2").build()
@@ -37,7 +40,7 @@ public class UserServiceTest extends BaseUnitTest {
     }
 
     @Test
-    public void should_return_exception_when_no_user_is_retrieved() throws Exception {
+    public void testReturnExceptionWhenNoUserRetrieved() throws Exception {
         doReturn(Optional.empty()).when(userRepository).findByName(any());
         assertThrows(UserNotFoundException.class, () -> userService.getUserByName("test_name"));
     }

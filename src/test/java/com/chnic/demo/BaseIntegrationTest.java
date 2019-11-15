@@ -10,10 +10,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @author xxx
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @AutoConfigureMockMvc
 public abstract class BaseIntegrationTest {
 
