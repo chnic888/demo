@@ -40,8 +40,17 @@ public class UserController {
     }
 
     @GetMapping(value = "/{name}")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserResponse> getUserByName(@PathVariable("name") String name) {
         return userService.getUserByName(name).stream()
+                .map(user -> ModelMapper.map(user, UserResponse.class))
+                .collect(toList());
+    }
+
+    @PostMapping(value = "/email-migration")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserResponse> migrateUserByEmail(@RequestBody List<String> emailList) {
+        return userService.migrateUserByEmail(emailList).stream()
                 .map(user -> ModelMapper.map(user, UserResponse.class))
                 .collect(toList());
     }
