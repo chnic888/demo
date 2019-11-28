@@ -10,7 +10,7 @@ public class ModelMapper {
     public static <T, R> R map(T source, Class<R> targetClass) {
         R target;
         try {
-            target = targetClass.newInstance();
+            target = targetClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +22,7 @@ public class ModelMapper {
     public static <T, R> R map(T source, Class<R> targetClass, String... ignoreProperties) {
         R target;
         try {
-            target = targetClass.newInstance();
+            target = targetClass.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

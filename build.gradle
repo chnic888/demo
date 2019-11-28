@@ -148,8 +148,8 @@ task pullContainer(type: DockerPullImage) {
 
 task createContainer(type: DockerCreateContainer) {
     group 'docker'
-//    dependsOn pullContainer
-    targetImageId 'c8ee894bd2bd'
+    dependsOn pullContainer
+    targetImageId pullContainer.getImageId()
     portBindings = ['3406:3306']
     withEnvVar('MYSQL_ROOT_PASSWORD', 'root')
     withEnvVar('MYSQL_DATABASE', 'test')
@@ -169,7 +169,7 @@ task startAndWaitOnHealthyContainer(type: DockerWaitHealthyContainer) {
     targetContainerId createContainer.getContainerId()
 
     doLast {
-        sleep(10 * 1000)
+        sleep(7 * 1000)
     }
 }
 
