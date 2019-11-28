@@ -169,7 +169,7 @@ task startAndWaitOnHealthyContainer(type: DockerWaitHealthyContainer) {
     targetContainerId createContainer.getContainerId()
 
     doLast {
-        sleep(7 * 1000)
+        sleep(8 * 1000)
     }
 }
 

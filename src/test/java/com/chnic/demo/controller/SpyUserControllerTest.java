@@ -6,14 +6,14 @@ import com.chnic.demo.integration.IntegrationService;
 import com.chnic.demo.util.RandomGeneratorUtil;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 
 import java.util.Date;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,20 +21,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author xxx
  */
-public class MockUserControllerTest extends BaseIntegrationTest {
+public class SpyUserControllerTest extends BaseIntegrationTest {
 
-    @MockBean
+    @SpyBean
     private IntegrationService integrationService;
 
     @Test
-    public void testReturnMigratedUserWithMockIntegrationService() throws Exception {
-        when(integrationService.getUserByEmailFromExternalSystem(any())).thenReturn(User.builder()
-                .name("MockedUser")
+    public void testReturnMigratedUserWitSpyIntegrationService() throws Exception {
+        doReturn(User.builder().name("MockedUser")
                 .gender(1)
                 .birthday(new Date())
                 .email("test@163.com")
                 .mobile(RandomGeneratorUtil.generateMobileNumber())
-                .build());
+                .build())
+                .when(integrationService).getUserByEmailFromExternalSystem(anyString());
 
         mockMvc.perform(post("/api/v1/users/email-migration")
                 .contentType(MediaType.APPLICATION_JSON)
