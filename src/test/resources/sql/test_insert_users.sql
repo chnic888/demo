@@ -1,0 +1,1 @@
+INSERT INTO user (name, gender, birthday, mobile, email, remark) VALUES ('Eden Hazard', 1, '1991-01-07', '13900139000', 'eden.hazard@gmail.com', 'football');

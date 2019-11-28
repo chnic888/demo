@@ -4,6 +4,7 @@ import com.chnic.demo.BaseIntegrationTest;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.*;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -68,6 +69,14 @@ public class UserControllerTest extends BaseIntegrationTest {
                 .andExpect(jsonPath("$[0].email").value("123@gmail.com"))
                 .andExpect(jsonPath("$[1].name").exists())
                 .andExpect(jsonPath("$[1].email").value("456@gmail.cn"));
+    }
+
+    @Test
+    @Sql({"classpath:sql/test_insert_users.sql"})
+    public void testReturn4Users() throws Exception {
+        mockMvc.perform(get("/api/v1/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(4)));
     }
 
     @Disabled

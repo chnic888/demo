@@ -138,6 +138,7 @@ jacocoTestCoverageVerification {
     }
 }
 
+jacocoTestReport.dependsOn test
 jacocoTestReport.finalizedBy jacocoTestCoverageVerification
 
 task pullContainer(type: DockerPullImage) {
@@ -188,7 +189,7 @@ test {
     useJUnitPlatform()
     testLogging.showStandardStreams = true
     dependsOn pmdMain, startAndWaitOnHealthyContainer
-    finalizedBy removeContainer, jacocoTestReport
+    finalizedBy removeContainer
 }
 
 task unitTest(type: Test) {

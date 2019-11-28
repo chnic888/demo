@@ -1,8 +1,8 @@
 ## Spring Boot Demo
 
-#### Running Test
+#### Running Application
 ```bash
-./gradlew clean test
+./gradlew
 ```
 
 #### Build Artifact
@@ -10,17 +10,22 @@
 ./gradlew clean build
 ```
 
-### Running Application
+#### Running Test
 ```bash
-./gradlew
+./gradlew clean test
 ```
 
-### Build Docker Image
+#### Test Coverage Report
+```bash
+./gradlew clean jacocoTestReport
+```
+
+#### Build Docker Image
 ```bash
 docker build -t chnic888/demo:v1 .
 ```
 
-### Running Docker Container
+#### Running Docker Container
 ```bash
 docker run -d -e SPRING_PROFILES_ACTIVE=dev -e MYSQL_URL='jdbc:mysql://192.168.0.104:3306/test?allowPublicKeyRetrieval=true&useSSL=false' -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=root chnic888/demo:v1 
 ```
