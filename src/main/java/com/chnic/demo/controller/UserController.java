@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/email-migration")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public List<UserResponse> migrateUserByEmail(@RequestBody List<String> emailList) {
         return userService.migrateUserByEmail(emailList).stream()
                 .map(user -> ModelMapper.map(user, UserResponse.class))

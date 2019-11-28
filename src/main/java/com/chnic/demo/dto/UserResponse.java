@@ -17,4 +17,7 @@ public class UserResponse {
 
     @JsonProperty("name")
     private String name;
+
+    @JsonProperty("email")
+    private String email;
 }

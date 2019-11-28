@@ -14,6 +14,8 @@ import java.util.Date;
 @Service
 public class IntegrationService {
 
+    private static final String EMAIL_SUFFIX = "com";
+
     public User getUserByEmailFromExternalSystem(String email) {
         log.info("get user from external system by {}", email);
 
@@ -23,7 +25,7 @@ public class IntegrationService {
                 .birthday(new Date())
                 .email(email);
 
-        if (email.endsWith("com")) {
+        if (email.endsWith(EMAIL_SUFFIX)) {
             userBuilder.gender(1);
         } else {
             userBuilder.gender(0);
