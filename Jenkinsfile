@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh './gradlew pmdMain pmdTest'
                 sh './gradlew spotbugsMain spotbugsTest'
-                sh './gradlew test'
+                sh './gradlew test jacocoTestReport'
             }
         }
 
@@ -31,8 +31,9 @@ pipeline {
         always {
             recordIssues enabledForFailure: true, tools: [pmdParser(pattern: '**/build/reports/pmd/*.xml', reportEncoding: 'UTF-8')]
             recordIssues enabledForFailure: true, tools: [spotBugs(pattern: '**/build/reports/spotbugs/*.xml', reportEncoding: 'UTF-8', useRankAsPriority: true)]
+            jacoco()
             junit allowEmptyResults: true, testResults: '**/build/test-results/test/TEST-*.xml'
-            archiveArtifacts 'build/libs/*.jar'
+            archiveArtifacts artifacts: 'build/libs/*.jar', onlyIfSuccessful: true
         }
     }
 }
