@@ -22,7 +22,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "./gradlew build"
+                sh "./gradlew build -x pmdMain -x pmdTest -x spotbugsMain -x spotbugsTest -x test"
             }
         }
     }
@@ -30,8 +30,9 @@ pipeline {
     post {
         always {
             recordIssues enabledForFailure: true, tools: [pmdParser(pattern: '**/build/reports/pmd/*.xml', reportEncoding: 'UTF-8')]
+            recordIssues enabledForFailure: true, tools: [spotBugs(pattern: '**/build/reports/spotbugs/*.xml', reportEncoding: 'UTF-8', useRankAsPriority: true)]
             junit allowEmptyResults: true, testResults: '**/build/test-results/test/TEST-*.xml'
-            archiveArtifacts 'target/*.jar'
+            archiveArtifacts 'build/libs/*.jar'
         }
     }
 }

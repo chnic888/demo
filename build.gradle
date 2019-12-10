@@ -90,8 +90,8 @@ spotbugs {
 }
 
 tasks.withType(SpotBugsTask) {
-    reports.xml.enabled = false
-    reports.html.enabled = true
+    reports.xml.enabled = true
+    reports.html.enabled = false
 }
 
 jacocoTestReport {
