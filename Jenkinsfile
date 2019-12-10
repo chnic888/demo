@@ -29,8 +29,8 @@ pipeline {
 
     post {
         always {
-            recordIssues(tools: [pmdParser(pattern: '**/build/reports/main.xml,**/build/reports/test.xml', reportEncoding: 'UTF-8')])
-            junit '**/build/test-results/test/TEST-*.xml'
+            recordIssues enabledForFailure: true, tools: [pmdParser(pattern: '**/build/reports/pmd/*.xml', reportEncoding: 'UTF-8')]
+            junit allowEmptyResults: true, testResults: '**/build/test-results/test/TEST-*.xml'
             archiveArtifacts 'target/*.jar'
         }
     }

@@ -29,12 +29,12 @@ public class UserControllerTest extends BaseIntegrationTest {
     }
 
     @BeforeAll
-    public static void BeforeAll() {
+    public static void beforeAll() {
         System.out.println("##############BeforeAll##############");
     }
 
     @AfterAll
-    public static void AfterAll() {
+    public static void afterAll() {
         System.out.println("##############AfterAll##############");
     }
 
