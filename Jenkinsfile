@@ -25,12 +25,13 @@ pipeline {
                 sh "./gradlew build"
             }
         }
-   }
+    }
 
-   post {
-            success {
-               junit '**/target/surefire-reports/TEST-*.xml'
-               archiveArtifacts 'target/*.jar'
-            }
+    post {
+        always {
+            recordIssues(tools: [pmdParser(pattern: '**/build/reports/main.xml,**/build/reports/test.xml', reportEncoding: 'UTF-8')])
+            junit '**/build/test-results/test/TEST-*.xml'
+            archiveArtifacts 'target/*.jar'
+        }
     }
 }
