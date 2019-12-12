@@ -25,6 +25,13 @@ pipeline {
                 sh "./gradlew build -x pmdMain -x pmdTest -x spotbugsMain -x spotbugsTest -x test"
             }
         }
+
+        stage('SonarQube analysis') {
+            def scannerHome = tool 'SonarScanner';
+            withSonarQubeEnv('SonarQube Server') {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
     }
 
     post {
