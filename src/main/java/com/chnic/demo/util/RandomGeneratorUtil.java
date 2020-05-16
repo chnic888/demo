@@ -7,10 +7,10 @@ import java.util.stream.IntStream;
  * @author xxx
  */
 public class RandomGeneratorUtil {
+    private static final Random RANDOM = new Random();
 
     public static String generateMobileNumber() {
-        Random random = new Random();
-        return IntStream.range(0, 9).map(i -> Math.abs(random.nextInt(10)))
+        return IntStream.range(0, 9).map(i -> Math.abs(RANDOM.nextInt(10)))
                 .collect(() -> new StringBuilder("13"), StringBuilder::append, StringBuilder::append)
                 .toString();
     }
